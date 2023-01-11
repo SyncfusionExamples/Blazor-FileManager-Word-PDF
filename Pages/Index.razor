@@ -14,7 +14,7 @@
     </SfFileManager>
     <br />
     <div>
-        <SfDialog Width="1000px" Height="750px" EnableResize="true" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsDialogVisible">
+        <SfDialog Width="1000px" Height="750px" EnableResize="true" AllowDragging="true" ShowCloseIcon="true" AllowPrerender="true" Visible="@IsDialogVisible">
             <DialogTemplates>
                 <Header> @DialogTitle </Header>
                 <Content>
@@ -23,7 +23,6 @@
                     </div>
                     <div style="display:@DocVisible">
                         <SfDocumentEditorContainer @ref="documentEditorContainer" EnableToolbar="true">
-                            <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
                         </SfDocumentEditorContainer>
                     </div>
                 </Content>
@@ -35,13 +34,11 @@
 @code
 {
     private string DocumentPath { get; set; } = string.Empty;
-    private bool IsDialogVisible { get; set; } = true;
+    private bool IsDialogVisible { get; set; } = false;
     private string PdfVisible { get; set; } = "none";
-    private string DocVisible { get; set; } = "block";
-
+    private string DocVisible { get; set; } = "none";
     private string DialogTitle { get; set; } = "Preview a File";
     SfDocumentEditorContainer documentEditorContainer;
-    SfDocumentEditor editor;
 
     private void OpenFilePreview(FileOpenEventArgs<FileManagerDirectoryContent> args)
     {
@@ -53,25 +50,8 @@
         }
         else if (args.FileDetails.Type == ".docx")
         {
-            //DocVisible = "block";
+            DocVisible = "block";
             this.OpenDocument("wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name);
-        }
-    }
-
-    public void OnCreated(object args)
-    {
-        string filePath = "wwwroot/data/file-manager.docx";
-        using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-        {
-            WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
-            string json = JsonSerializer.Serialize(document);
-            document.Dispose();
-            //To observe the memory go down, null out the reference of document variable.
-            document = null;
-            editor = documentEditorContainer.DocumentEditor;
-            editor.OpenAsync(json);
-            //To observe the memory go down, null out the reference of json variable.
-            json = null;
         }
     }
 
@@ -84,8 +64,8 @@
             document.Dispose();
             //To observe the memory go down, null out the reference of document variable.
             document = null;
-            editor = documentEditorContainer.DocumentEditor;
-            editor.OpenAsync(json);
+            //editor = documentEditorContainer.DocumentEditor;
+            documentEditorContainer.DocumentEditor.OpenAsync(json);
             //To observe the memory go down, null out the reference of json variable.
             json = null;
         }
