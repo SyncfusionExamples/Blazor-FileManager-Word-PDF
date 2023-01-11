@@ -14,48 +14,49 @@
     </SfFileManager>
     <br />
     <div>
-        <SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+        <SfDialog Width="1000px" Height="750px" EnableResize="true" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsDialogVisible">
             <DialogTemplates>
-                <Header> Dialog </Header>
-                <Content> This is a dialog with header </Content>
+                <Header> @DialogTitle </Header>
+                <Content>
+                    <div style="display:@PdfVisible">
+                        <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
+                    </div>
+                    <div style="display:@DocVisible">
+                        <SfDocumentEditorContainer @ref="documentEditorContainer" EnableToolbar="true">
+                            <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
+                        </SfDocumentEditorContainer>
+                    </div>
+                </Content>
             </DialogTemplates>
         </SfDialog>
     </div>
-    <div>
-        <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
-    </div>
-    <div>
-        <SfDocumentEditorContainer @ref="documentEditor" EnableToolbar="true">
-            <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
-        </SfDocumentEditorContainer>
-    </div>
+
 </div>
 @code
 {
-    private string DocumentPath { get; set; } = "wwwroot/data/pdf-succinctly.pdf";
+    private string DocumentPath { get; set; } = string.Empty;
+    private bool IsDialogVisible { get; set; } = true;
+    private string PdfVisible { get; set; } = "none";
+    private string DocVisible { get; set; } = "block";
+
+    private string DialogTitle { get; set; } = "Preview a File";
+    SfDocumentEditorContainer documentEditorContainer;
+    SfDocumentEditor editor;
 
     private void OpenFilePreview(FileOpenEventArgs<FileManagerDirectoryContent> args)
     {
-
+        this.IsDialogVisible = true;
         if (args.FileDetails.Type == ".pdf")
         {
+            PdfVisible = "block";
             DocumentPath = "wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name;
         }
         else if (args.FileDetails.Type == ".docx")
         {
+            //DocVisible = "block";
             this.OpenDocument("wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name);
-
         }
     }
-
-    private bool IsVisible { get; set; } = true;
-
-    private void OpenDialog()
-    {
-        this.IsVisible = true;
-    }
-
-    SfDocumentEditorContainer documentEditor;
 
     public void OnCreated(object args)
     {
@@ -67,7 +68,7 @@
             document.Dispose();
             //To observe the memory go down, null out the reference of document variable.
             document = null;
-            SfDocumentEditor editor = documentEditor.DocumentEditor;
+            editor = documentEditorContainer.DocumentEditor;
             editor.OpenAsync(json);
             //To observe the memory go down, null out the reference of json variable.
             json = null;
@@ -83,7 +84,7 @@
             document.Dispose();
             //To observe the memory go down, null out the reference of document variable.
             document = null;
-            SfDocumentEditor editor = documentEditor.DocumentEditor;
+            editor = documentEditorContainer.DocumentEditor;
             editor.OpenAsync(json);
             //To observe the memory go down, null out the reference of json variable.
             json = null;
