@@ -3,7 +3,6 @@
 
 <PageTitle>Index</PageTitle>
 <div class="controlregion">
-
     <SfFileManager TValue="FileManagerDirectoryContent" ShowThumbnail="true" AllowMultiSelection="false">
         <FileManagerAjaxSettings Url="/api/FileManager/FileOperations"
                                  UploadUrl="/api/FileManager/Upload"
@@ -12,24 +11,22 @@
         </FileManagerAjaxSettings>
         <FileManagerEvents TValue="FileManagerDirectoryContent" OnFileOpen="OpenFilePreview"></FileManagerEvents>
     </SfFileManager>
-    <br />
-    <div>
-        <SfDialog Width="1000px" Height="750px" EnableResize="true" AllowDragging="true" ShowCloseIcon="true" AllowPrerender="true" Visible="@IsDialogVisible">
-            <DialogTemplates>
-                <Header> @DialogTitle </Header>
-                <Content>
-                    <div style="display:@PdfVisible">
-                        <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
-                    </div>
-                    <div style="display:@DocVisible">
-                        <SfDocumentEditorContainer @ref="documentEditorContainer" EnableToolbar="true">
-                        </SfDocumentEditorContainer>
-                    </div>
-                </Content>
-            </DialogTemplates>
-        </SfDialog>
-    </div>
 
+    <SfDialog Width="100%" Height="100%" EnableResize="true" AllowDragging="true" ShowCloseIcon="true" AllowPrerender="true" Visible="@IsDialogVisible">
+        <DialogTemplates>
+            <Header> @DialogTitle </Header>
+            <Content>
+                <div style="display:@PdfVisible">
+                    <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
+                </div>
+                <div style="display:@DocVisible">
+                    <SfDocumentEditorContainer @ref="documentEditorContainer" EnableToolbar="true">
+                    </SfDocumentEditorContainer>
+                </div>
+                @DialogContent
+            </Content>
+        </DialogTemplates>
+    </SfDialog>
 </div>
 @code
 {
@@ -38,24 +35,40 @@
     private string PdfVisible { get; set; } = "none";
     private string DocVisible { get; set; } = "none";
     private string DialogTitle { get; set; } = "Preview a File";
+    private string DialogContent { get; set; } = string.Empty;
     SfDocumentEditorContainer documentEditorContainer;
 
     private void OpenFilePreview(FileOpenEventArgs<FileManagerDirectoryContent> args)
     {
-        this.IsDialogVisible = true;
+        if (!string.IsNullOrEmpty(args.FileDetails.Type))
+            this.IsDialogVisible = true;
         if (args.FileDetails.Type == ".pdf")
         {
+            DialogTitle = "Preview PDF file : " + args.FileDetails.Name;
             PdfVisible = "block";
+            DocVisible = "none";
+            DialogContent = string.Empty;
             DocumentPath = "wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name;
         }
         else if (args.FileDetails.Type == ".docx")
         {
+            DialogTitle = "Preview Word file : " + args.FileDetails.Name;
             DocVisible = "block";
-            this.OpenDocument("wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name);
+            PdfVisible = "none";
+            DialogContent = string.Empty;
+            this.OpenDocumentEditor("wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name);
+        }
+        else
+        {
+            DocumentPath = string.Empty;
+            PdfVisible = "none";
+            DocVisible = "none";
+            DialogTitle = "File Type is invalid";
+            DialogContent = "Preview is unavailable for this file type";
         }
     }
 
-    public void OpenDocument(string filePath)
+    public void OpenDocumentEditor(string filePath)
     {
         using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
         {
