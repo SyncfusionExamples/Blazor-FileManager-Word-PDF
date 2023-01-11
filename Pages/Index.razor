@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Text.Json;
 
 <PageTitle>Index</PageTitle>
 <div class="controlregion">
@@ -15,7 +16,11 @@
     <div>
         <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
     </div>
-    @DocumentPath
+    <div>
+        <SfDocumentEditorContainer @ref="documentEditor" EnableToolbar=true>
+            <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
+        </SfDocumentEditorContainer>
+    </div>
 </div>
 @code
 {
@@ -26,6 +31,25 @@
         if (args.FileDetails.Type == ".pdf")
         {
             DocumentPath = "wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name;
+        }
+    }
+
+    SfDocumentEditorContainer documentEditor;
+
+    public void OnCreated(object args)
+    {
+        string filePath = "wwwroot/data/file-manager.docx";
+        using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        {
+            WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
+            string json = JsonSerializer.Serialize(document);
+            document.Dispose();
+            //To observe the memory go down, null out the reference of document variable.
+            document = null;
+            SfDocumentEditor editor = documentEditor.DocumentEditor;
+            editor.OpenAsync(json);
+            //To observe the memory go down, null out the reference of json variable.
+            json = null;
         }
     }
 }
