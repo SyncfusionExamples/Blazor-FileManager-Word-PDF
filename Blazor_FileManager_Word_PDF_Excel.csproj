@@ -20,6 +20,7 @@
 		<PackageReference Include="Syncfusion.Blazor.Navigations" Version="20.4.0.43" />
 		<PackageReference Include="Syncfusion.Blazor.PdfViewer" Version="20.4.0.43" />
 		<PackageReference Include="Syncfusion.Blazor.PdfViewerServer.Windows" Version="20.4.0.43" />
+		<PackageReference Include="Syncfusion.Blazor.Popups" Version="20.4.0.43" />
 		<PackageReference Include="Syncfusion.Blazor.Themes" Version="20.4.0.43" />
 		<PackageReference Include="Syncfusion.Blazor.WordProcessor" Version="20.4.0.43" />
 	</ItemGroup>

@@ -14,10 +14,18 @@
     </SfFileManager>
     <br />
     <div>
+        <SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+            <DialogTemplates>
+                <Header> Dialog </Header>
+                <Content> This is a dialog with header </Content>
+            </DialogTemplates>
+        </SfDialog>
+    </div>
+    <div>
         <SfPdfViewerServer DocumentPath="@DocumentPath" Height="500px" Width="1060px"></SfPdfViewerServer>
     </div>
     <div>
-        <SfDocumentEditorContainer @ref="documentEditor" EnableToolbar=true>
+        <SfDocumentEditorContainer @ref="documentEditor" EnableToolbar="true">
             <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
         </SfDocumentEditorContainer>
     </div>
@@ -28,10 +36,23 @@
 
     private void OpenFilePreview(FileOpenEventArgs<FileManagerDirectoryContent> args)
     {
+
         if (args.FileDetails.Type == ".pdf")
         {
             DocumentPath = "wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name;
         }
+        else if (args.FileDetails.Type == ".docx")
+        {
+            this.OpenDocument("wwwroot\\Files" + args.FileDetails.FilterPath + args.FileDetails.Name);
+
+        }
+    }
+
+    private bool IsVisible { get; set; } = true;
+
+    private void OpenDialog()
+    {
+        this.IsVisible = true;
     }
 
     SfDocumentEditorContainer documentEditor;
@@ -39,6 +60,22 @@
     public void OnCreated(object args)
     {
         string filePath = "wwwroot/data/file-manager.docx";
+        using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        {
+            WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
+            string json = JsonSerializer.Serialize(document);
+            document.Dispose();
+            //To observe the memory go down, null out the reference of document variable.
+            document = null;
+            SfDocumentEditor editor = documentEditor.DocumentEditor;
+            editor.OpenAsync(json);
+            //To observe the memory go down, null out the reference of json variable.
+            json = null;
+        }
+    }
+
+    public void OpenDocument(string filePath)
+    {
         using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
         {
             WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
