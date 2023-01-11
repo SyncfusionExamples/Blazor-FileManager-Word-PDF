@@ -1,0 +1,36 @@
+﻿@page "/filemanager-features"
+@using Syncfusion.Blazor.FileManager
+<h2>File Manager</h2>
+<br/>
+@inject IJSRuntime JsRuntime;
+<div id = "ControlRegion">
+<SfFileManager TValue="FileManagerDirectoryContent" ShowThumbnail="true"  AllowMultiSelection="false" >
+    <FileManagerAjaxSettings Url="/api/FileManager/FileOperations"
+                             UploadUrl="/api/FileManager/Upload"
+                             DownloadUrl="/api/FileManager/Download"
+                             GetImageUrl="/api/FileManager/GetImage">
+    </FileManagerAjaxSettings>
+</SfFileManager>
+</div>
+<br/>
+<div>
+  <h3>Selected Features:</h3>
+    <ul class="ulstyle">
+      <li class="list"> Thumbnail</li>
+      <li class="list"> Theme - Fluent</li>
+    </ul>
+</div>
+<br/>
+<style>
+    .ulstyle {
+        margin: 0px;
+        padding-left: 20px;
+        display: inline-block;
+    }
+    .list {
+    float: left;
+    line-height: 20px;
+    margin: 10px;
+    min-width: 200px;
+    }
+</style>
