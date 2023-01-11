@@ -42,6 +42,8 @@
     {
         if (!string.IsNullOrEmpty(args.FileDetails.Type))
             this.IsDialogVisible = true;
+        else
+            this.IsDialogVisible = false;
         if (args.FileDetails.Type == ".pdf")
         {
             DialogTitle = "Preview PDF file : " + args.FileDetails.Name;
@@ -63,8 +65,8 @@
             DocumentPath = string.Empty;
             PdfVisible = "none";
             DocVisible = "none";
-            DialogTitle = "File Type is invalid";
-            DialogContent = "Preview is unavailable for this file type";
+            DialogTitle = "Preview is unavailable";
+            DialogContent = "Preview is unavailable or not handled for this file type (" + args.FileDetails.Type + ")";
         }
     }
 
