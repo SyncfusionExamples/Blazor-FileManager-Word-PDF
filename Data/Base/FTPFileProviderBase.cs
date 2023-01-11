@@ -7,8 +7,9 @@ using SfFileService.FileManager.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
+using Syncfusion.Blazor.FileManager.Base;
 
-namespace Syncfusion.EJ2.FileManager.Base
+namespace Syncfusion.Blazor.FileManager.Base
 {
     public interface FTPFileProviderBase : FileProviderBase
     {

@@ -10,8 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using SfFileService.FileManager.Base;
+using Syncfusion.Blazor.FileManager;
+using Syncfusion.Blazor.FileManager.Base;
 
-namespace Syncfusion.EJ2.FileManager.Base
+namespace Syncfusion.Blazor.FileManager.Base
 {
     public interface FileProviderBase
     {

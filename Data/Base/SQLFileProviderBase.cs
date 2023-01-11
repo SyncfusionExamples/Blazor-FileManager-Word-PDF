@@ -7,7 +7,7 @@ using SfFileService.FileManager.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using Syncfusion.EJ2.FileManager.Base;
+using Syncfusion.Blazor.FileManager.Base;
 
 namespace SfFileService.FileManager.Base
 {

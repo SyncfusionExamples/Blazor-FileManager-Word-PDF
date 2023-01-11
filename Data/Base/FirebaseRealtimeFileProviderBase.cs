@@ -1,6 +1,6 @@
 ﻿
 
-using Syncfusion.EJ2.FileManager.Base;
+using Syncfusion.Blazor.FileManager.Base;
 
 namespace SfFileService.FileManager.Base
 {

@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using SfFileService.FileManager.Base;
+using Syncfusion.Blazor.FileManager;
+using Syncfusion.Blazor.FileManager.Base;
 
 namespace Blazor_FileManager_Word_PDF_Excel.Controllers
 {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using SfFileService.FileManager.Base;
+using Syncfusion.Blazor.FileManager;
 
-namespace Syncfusion.EJ2.FileManager.Base
+namespace Syncfusion.Blazor.FileManager.Base
 {
 
     public class FileManagerResponse

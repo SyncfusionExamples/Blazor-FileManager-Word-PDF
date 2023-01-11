@@ -10,7 +10,9 @@ using SfFileService.FileManager.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using Syncfusion.EJ2.FileManager.Base;
+using Syncfusion.Blazor.FileManager.Base;
+using Syncfusion.Blazor.FileManager;
+
 namespace SfFileService.FileManager.PhysicalFileProvider
 {
     public class PhysicalFileProvider : PhysicalFileProviderBase
@@ -308,9 +310,9 @@ namespace SfFileService.FileManager.PhysicalFileProvider
                     fileDetails.Name = info.Name == "" ? directory.Name : info.Name;
                     fileDetails.IsFile = (File.GetAttributes(fullPath) & FileAttributes.Directory) != FileAttributes.Directory;
                     fileDetails.Size = (File.GetAttributes(fullPath) & FileAttributes.Directory) != FileAttributes.Directory ? byteConversion(info.Length).ToString() : byteConversion(GetDirectorySize(new DirectoryInfo(fullPath), 0)).ToString();
-                    fileDetails.Created = info.CreationTime;
+                    fileDetails.Created = info.CreationTime.ToShortDateString();
                     fileDetails.Location = GetRelativePath(string.IsNullOrEmpty(this.hostName) ? baseDirectory.Parent.FullName : baseDirectory.Parent.FullName + Path.DirectorySeparatorChar, info.FullName).Substring(1);
-                    fileDetails.Modified = info.LastWriteTime;
+                    fileDetails.Modified = info.LastWriteTime.ToShortDateString();
                     fileDetails.Permission = GetPermission(physicalPath, fileDetails.Name, fileDetails.IsFile);
                     detailFiles = fileDetails;
                 }
