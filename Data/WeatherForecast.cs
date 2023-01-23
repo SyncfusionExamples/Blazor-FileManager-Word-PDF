@@ -1,4 +1,4 @@
-﻿namespace Blazor_FileManager_Word_PDF_Excel.Data
+﻿namespace Blazor_FileManager_Word_PDF.Data
 {
     public class WeatherForecast
     {

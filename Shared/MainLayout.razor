@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JS
 @using Syncfusion.Blazor.Navigations
-<PageTitle>Blazor_FileManager_Word_PDF_Excel</PageTitle>
+<PageTitle>Blazor_FileManager_Word_PDF</PageTitle>
 <SfSidebar ID="Sidebar" Type="SidebarType.Push" Width="300px" DockSize="65px" EnableDock="true" @ref="Sidebar" @bind-IsOpen="SidebarToggle">
     <div class="sidebar" style="position:fixed;z-index:1200">
         <div class="topnav navbar navbar-dark">
             <button class="navbar-toggler" @onclick="ToggleNavMenu" />
-            <a class="navbar-brand" href=""><span class="displayText" style="margin-right:30px">Blazor_FileManager_Word_PDF_Excel</span></a>
+            <a class="navbar-brand" href=""><span class="displayText" style="margin-right:30px">Blazor_FileManager_Word_PDF</span></a>
         </div>
         <div @onmouseover="MouseIn" @onmouseout="MouseOut">
             <NavMenu />

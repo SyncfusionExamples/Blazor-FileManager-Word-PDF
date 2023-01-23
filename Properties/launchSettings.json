@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Blazor_FileManager_Word_PDF_Excel": {
+    "Blazor_FileManager_Word_PDF": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -11,7 +11,7 @@ using SfFileService.FileManager.Base;
 using Syncfusion.Blazor.FileManager;
 using Syncfusion.Blazor.FileManager.Base;
 
-namespace Blazor_FileManager_Word_PDF_Excel.Controllers
+namespace Blazor_FileManager_Word_PDF.Controllers
 {
 
     [Route("api/[controller]")]
