@@ -26,6 +26,7 @@
                 @DialogContent
             </Content>
         </DialogTemplates>
+        <DialogEvents Opened="@DialogOpenedHandler"></DialogEvents>
     </SfDialog>
 </div>
 @code
@@ -72,17 +73,26 @@
 
     public void OpenDocumentEditor(string filePath)
     {
-        using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        if (documentEditorContainer != null)
         {
-            WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
-            string json = JsonSerializer.Serialize(document);
-            document.Dispose();
-            //To observe the memory go down, null out the reference of document variable.
-            document = null;
-            //editor = documentEditorContainer.DocumentEditor;
-            documentEditorContainer.DocumentEditor.OpenAsync(json);
-            //To observe the memory go down, null out the reference of json variable.
-            json = null;
+            using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            {
+                WordDocument document = WordDocument.Load(fileStream, ImportFormatType.Docx);
+                string json = JsonSerializer.Serialize(document);
+                document.Dispose();
+                //To observe the memory go down, null out the reference of document variable.
+                document = null;
+                //editor = documentEditorContainer.DocumentEditor;
+                documentEditorContainer.DocumentEditor.OpenAsync(json);
+                //To observe the memory go down, null out the reference of json variable.
+                json = null;
+            }
         }
+    }
+
+    public async void DialogOpenedHandler(OpenEventArgs args)
+    {
+        if (DocVisible == "block" && documentEditorContainer != null)
+            await documentEditorContainer.ResizeAsync();
     }
 }
